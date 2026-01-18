@@ -13,26 +13,34 @@
       background: #f5f5f5;
     }
 
+    input[type="text"] {
+      font-size: 1.2em;
+      padding: 10px;
+      width: 100%;
+      max-width: 400px;
+      margin-top: 20px;
+    }
+
     button {
       font-size: 1.2em;
       padding: 12px 20px;
       margin-top: 20px;
-    }
-
-    .sentence {
-      font-size: 1.4em;
-      margin-top: 30px;
     }
   </style>
 </head>
 <body>
 
   <h1>🎧 Listening en inglés</h1>
-  <p>Pulsa el botón y escucha la frase</p>
+  <p>Escribe una frase y pulsa escuchar</p>
 
-  <div class="sentence" id="sentence">
-    This is a cat.
-  </div>
+  <!-- Barra de texto editable -->
+  <input
+    type="text"
+    id="sentence"
+    value="This is a cat."
+  >
+
+  <br>
 
   <button onclick="playAudio()">🔊 Escuchar</button>
 
