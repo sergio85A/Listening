@@ -1,30 +1,38 @@
+let voices = [];
+
+// Cargar voces correctamente (CRÍTICO para Edge)
+function loadVoices() {
+  voices = speechSynthesis.getVoices();
+}
+
+// Edge necesita este evento
+speechSynthesis.onvoiceschanged = () => {
+  loadVoices();
+};
+
+// Llamada inicial (por si ya están)
+loadVoices();
+
 function playAudio() {
-  const text = document.getElementById("sentence").innerText;
+  const text = document.getElementById("sentence").value;
+  if (!text) return;
 
-  // Crear la frase hablada
+  // Cancelar cualquier audio previo
+  speechSynthesis.cancel();
+
   const utterance = new SpeechSynthesisUtterance(text);
-
-  // Ajustes ideales para niños
   utterance.lang = "en-US";
-  utterance.rate = 0.75;   // más lento
-  utterance.pitch = 1.1;  // ligeramente más agudo
+  utterance.rate = 0.75;
+  utterance.pitch = 1.1;
 
-  // Intentar seleccionar una voz en inglés
-  const voices = speechSynthesis.getVoices();
+  // Buscar voz inglesa
   const englishVoice = voices.find(v => v.lang.startsWith("en"));
 
   if (englishVoice) {
     utterance.voice = englishVoice;
+  } else {
+    console.warn("No English voice found, using default");
   }
 
-  // Reproducir
-  speechSynthesis.cancel(); // evita solapamientos
   speechSynthesis.speak(utterance);
-}
-
-// Solución al bug típico de móviles: forzar carga de voces
-if (speechSynthesis.onvoiceschanged !== undefined) {
-  speechSynthesis.onvoiceschanged = () => {
-    speechSynthesis.getVoices();
-  };
 }
